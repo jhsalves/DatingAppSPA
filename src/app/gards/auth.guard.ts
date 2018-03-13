@@ -7,7 +7,7 @@ import { AlertifyService } from '../services/alertify.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private router: Router, private alertify: AlertifyService){}
+  constructor(private authService: AuthService, private router: Router, private alertify: AlertifyService) {}
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     if (this.authService.loggedIn()) {
