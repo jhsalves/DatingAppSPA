@@ -8,6 +8,9 @@ import { AuthGuard } from './gards/auth.guard';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberDetailResolver } from './resolvers/member-detail.resolver';
 import { MemberListResolver } from './resolvers/member-list.resolver';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { MemberEditResolver } from './resolvers/member-edit.resolver';
+import { PreventUsavedChanges } from './gards/prevent-usaved-changes.guard';
 
 export const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -19,6 +22,8 @@ export const appRoutes: Routes = [
       { path: 'lists', component: ListsComponent },
       { path: 'members/:id', component: MemberDetailComponent, resolve: {user: MemberDetailResolver}},
       { path: 'members', component: MemberListComponent, resolve: {users: MemberListResolver} },
+      { path: 'member/edit', component: MemberEditComponent , resolve: {user: MemberEditResolver},
+          canDeactivate: [PreventUsavedChanges]},
       { path: 'messages', component: MessagesComponent },
     ]
   },
