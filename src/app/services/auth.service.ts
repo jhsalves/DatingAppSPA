@@ -37,8 +37,20 @@ export class AuthService {
         this.userToken = tokenString;
     }
 
+    getToken() {
+        const token = localStorage.getItem('token');
+        if (token) {
+            return token;
+        }
+        return false;
+    }
+
     getHttpOptions() {
         const headers = new Headers({'Content-type' : 'application/json'});
+        const token = this.getToken();
+        if (token) {
+            headers.append('Authorization', 'Bearer' + token);
+        }
         return new RequestOptions({headers: headers});
     }
 
