@@ -6,7 +6,7 @@ import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 import {tokenNotExpired, JwtHelper} from 'angular2-jwt';
 import { User } from '../models/User';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class AuthService {
@@ -19,26 +19,29 @@ export class AuthService {
     currentPhotoUrl = this.photoUrl.asObservable();
 
     changeMemberPhoto(photoUrl: string) {
+        let photo = photoUrl;
+        if ( photo == null) {
+            photo = photoUrl;
+        }
        this.photoUrl.next(photoUrl);
     }
 
     constructor(private http: Http) { }
 
-    login(model: any) {
+    login(user: User) {
 
-        return this.http.post(this.baseUrl + 'login', model, this.getHttpOptions()).map((response: Response) => {
-            const user = response.json();
-            if (user) {
-                this.setToken(user.tokenString, user.user);
+        return this.http.post(this.baseUrl + 'login', user, this.getHttpOptions()).map((response: Response) => {
+            const loggedUser = response.json();
+            if (loggedUser) {
+                this.setToken(loggedUser.tokenString, loggedUser.user);
                 this.changeMemberPhoto(this.currentUser.photoUrl);
             }
         }).catch(this.handleError);
     }
 
-    register(model: any) {
-        return this.http.post(this.baseUrl + 'register', model, this.getHttpOptions()).map(response => {
-
-        }).catch(this.handleError);
+    register(user: User) {
+        return this.http.post(this.baseUrl + 'register', user, this.getHttpOptions()).map(() => {})
+        .catch(this.handleError);
     }
 
     setToken(tokenString: string, user: any) {

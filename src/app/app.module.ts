@@ -1,4 +1,4 @@
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
@@ -6,7 +6,7 @@ import { AlertifyService } from './services/alertify.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './gards/auth.guard';
 import { PreventUsavedChanges} from './gards/prevent-usaved-changes.guard';
-import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule, BsDatepickerModule } from 'ngx-bootstrap';
 import { appRoutes } from './routes';
 
 import { AppComponent } from './app.component';
@@ -50,9 +50,11 @@ import { FileUploadModule } from 'ng2-file-upload';
     HttpModule,
     FormsModule,
     BsDropdownModule.forRoot(),
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     AuthModule,
     TabsModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     NgxGalleryModule,
     FileUploadModule
   ],

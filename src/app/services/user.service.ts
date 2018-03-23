@@ -45,4 +45,5 @@ export class UserService extends BaseService {
         .map(response => <User>response.json())
         .catch(this.handleError);
     }
+    
 }
