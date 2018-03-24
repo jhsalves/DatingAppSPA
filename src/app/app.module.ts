@@ -6,7 +6,7 @@ import { AlertifyService } from './services/alertify.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './gards/auth.guard';
 import { PreventUsavedChanges} from './gards/prevent-usaved-changes.guard';
-import { BsDropdownModule, TabsModule, BsDatepickerModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule, ButtonsModule } from 'ngx-bootstrap';
 import { appRoutes } from './routes';
 
 import { AppComponent } from './app.component';
@@ -28,6 +28,7 @@ import { MemberEditResolver } from './resolvers/member-edit.resolver';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import {TimeAgoPipe} from 'time-ago-pipe';
 
 
 
@@ -43,7 +44,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     ListsComponent,
     MessagesComponent,
     MemberEditComponent,
-    PhotoEditorComponent
+    PhotoEditorComponent,
+    TimeAgoPipe
 ],
   imports: [
     BrowserModule,
@@ -56,7 +58,9 @@ import { FileUploadModule } from 'ng2-file-upload';
     TabsModule.forRoot(),
     BsDatepickerModule.forRoot(),
     NgxGalleryModule,
-    FileUploadModule
+    FileUploadModule,
+    PaginationModule.forRoot(),
+    ButtonsModule.forRoot()
   ],
   providers: [
     AuthService,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Http } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from './auth.service';
 import { BaseService } from './base';
@@ -9,6 +9,7 @@ import { Photo } from '../models/Photo';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { AuthHttp } from 'angular2-jwt';
+import { PaginatedResult } from '../models/pagination';
 
 @Injectable()
 export class UserService extends BaseService {
@@ -18,10 +19,28 @@ export class UserService extends BaseService {
         super();
      }
 
-    getUsers(): Observable<User[]> {
-        return this.authHttp.get(this.baseUrl + 'users')
-        .map(response => <User[]>response.json())
-        .catch(this.handleError);
+    getUsers(page?: number, itemsPerPage?: number, userParams?: any): Observable<PaginatedResult<User[]>> {
+        const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<User[]>();
+        let queryString = '?';
+
+        if (page != null && itemsPerPage != null) {
+            queryString += 'pageNumber=' + page + '&pageSize=' + itemsPerPage + '&';
+        }
+        if (userParams != null) {
+            queryString += 'minAge=' + userParams.MinAge;
+            queryString += '&maxAge=' + userParams.MaxAge;
+            queryString += '&gender=' + userParams.gender;
+            queryString += '&orderBy=' + userParams.orderBy;
+        }
+        return this.authHttp
+        .get(this.baseUrl + 'users' + queryString)
+        .map((response: Response) => {
+            paginatedResult.result = response.json();
+            if (response.headers.get('Pagination')) {
+                paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+            }
+            return paginatedResult;
+        }).catch(this.handleError);
     }
 
     updateUser(id: number, user: User) {
@@ -45,5 +64,4 @@ export class UserService extends BaseService {
         .map(response => <User>response.json())
         .catch(this.handleError);
     }
-    
 }
