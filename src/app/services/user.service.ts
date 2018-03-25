@@ -19,19 +19,30 @@ export class UserService extends BaseService {
         super();
      }
 
-    getUsers(page?: number, itemsPerPage?: number, userParams?: any): Observable<PaginatedResult<User[]>> {
+    getUsers(page?: number, itemsPerPage?: number, userParams?: any, likesParam?: string): Observable<PaginatedResult<User[]>> {
         const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<User[]>();
         let queryString = '?';
 
         if (page != null && itemsPerPage != null) {
             queryString += 'pageNumber=' + page + '&pageSize=' + itemsPerPage + '&';
         }
+
+        if (likesParam === 'Likers') {
+            queryString += 'Likers=true&';
+        }
+
+        if (likesParam === 'Likees') {
+            queryString += 'Likees=true&';
+        }
+
         if (userParams != null) {
             queryString += 'minAge=' + userParams.MinAge;
             queryString += '&maxAge=' + userParams.MaxAge;
             queryString += '&gender=' + userParams.gender;
             queryString += '&orderBy=' + userParams.orderBy;
         }
+        console.log(queryString);
+
         return this.authHttp
         .get(this.baseUrl + 'users' + queryString)
         .map((response: Response) => {
@@ -56,6 +67,10 @@ export class UserService extends BaseService {
 
     deletePhoto(userId: number, id: number) {
         return this.authHttp.delete(this.baseUrl + 'users/' + userId + '/photos/' + id).catch(this.handleError);
+    }
+
+    sendLike(id: number, recipientId: number) {
+        return this.authHttp.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {}).catch(this.handleError);
     }
 
     getUser(id): Observable<User> {

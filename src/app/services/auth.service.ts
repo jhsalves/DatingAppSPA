@@ -66,7 +66,7 @@ export class AuthService {
         if (token) {
             headers.append('Authorization', 'Bearer' + token);
         }
-        headers.append('Accept','application/json');
+        headers.append('Accept', 'application/json');
         return new RequestOptions({headers: headers});
     }
 

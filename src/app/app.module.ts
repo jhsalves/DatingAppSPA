@@ -24,6 +24,7 @@ import { UserService } from './services/user.service';
 import { AuthModule } from './auth/auth.module';
 import { MemberDetailResolver } from './resolvers/member-detail.resolver';
 import { MemberListResolver } from './resolvers/member-list.resolver';
+import { ListsResolver } from './resolvers/lists.resolver';
 import { MemberEditResolver } from './resolvers/member-edit.resolver';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
@@ -70,6 +71,7 @@ import {TimeAgoPipe} from 'time-ago-pipe';
     MemberDetailResolver,
     MemberListResolver,
     MemberEditResolver,
+    ListsResolver,
     PreventUsavedChanges
   ],
   bootstrap: [AppComponent]

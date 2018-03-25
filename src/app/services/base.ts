@@ -6,6 +6,9 @@ import { Headers } from '@angular/http';
 
 export class BaseService {
     protected handleError(error: any) {
+        if (error.status === 400) {
+            return Observable.throw(error._body);
+        }
         const applicationError = error.headers.get('Application-Error');
         if (applicationError) {
             return Observable.throw(applicationError);
