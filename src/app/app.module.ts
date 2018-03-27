@@ -17,6 +17,7 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { RouterModule } from '@angular/router';
@@ -26,6 +27,7 @@ import { MemberDetailResolver } from './resolvers/member-detail.resolver';
 import { MemberListResolver } from './resolvers/member-list.resolver';
 import { ListsResolver } from './resolvers/lists.resolver';
 import { MemberEditResolver } from './resolvers/member-edit.resolver';
+import { MessagesResolver } from './resolvers/message.resolver';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { FileUploadModule } from 'ng2-file-upload';
@@ -46,7 +48,8 @@ import {TimeAgoPipe} from 'time-ago-pipe';
     MessagesComponent,
     MemberEditComponent,
     PhotoEditorComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
+    MemberMessagesComponent
 ],
   imports: [
     BrowserModule,
@@ -72,7 +75,8 @@ import {TimeAgoPipe} from 'time-ago-pipe';
     MemberListResolver,
     MemberEditResolver,
     ListsResolver,
-    PreventUsavedChanges
+    PreventUsavedChanges,
+    MessagesResolver
   ],
   bootstrap: [AppComponent]
 })

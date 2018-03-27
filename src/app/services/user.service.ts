@@ -10,6 +10,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { AuthHttp } from 'angular2-jwt';
 import { PaginatedResult } from '../models/pagination';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Injectable()
 export class UserService extends BaseService {
@@ -41,7 +42,6 @@ export class UserService extends BaseService {
             queryString += '&gender=' + userParams.gender;
             queryString += '&orderBy=' + userParams.orderBy;
         }
-        console.log(queryString);
 
         return this.authHttp
         .get(this.baseUrl + 'users' + queryString)
@@ -77,6 +77,48 @@ export class UserService extends BaseService {
         return this.authHttp
         .get(this.baseUrl + 'users/' + id)
         .map(response => <User>response.json())
+        .catch(this.handleError);
+    }
+
+    getMessages(id: number, page?: number, itemsPerPage?: number, messageContainer?: string) {
+        const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
+        let queryString = '?MessageContainer=' + messageContainer;
+
+        if (page != null && itemsPerPage != null) {
+            queryString += '&pageNumber=' + page + '&pageSize=' + itemsPerPage;
+        }
+
+        return this.authHttp.get(this.baseUrl + 'users/' + id + '/messages' + queryString)
+                            .map((response: Response) => {
+                                    paginatedResult.result = response.json();
+
+                                if (response.headers.get('Pagination') != null) {
+                                    paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+                                }
+                                return paginatedResult;
+                            }).catch(this.handleError);
+
+    }
+
+    getMessageThread(id: number, recipientId: number) {
+        return this.authHttp.get(this.baseUrl + 'users/' + id + '/messages/thread/' + recipientId).map(response => {
+            return response.json();
+        }).catch(this.handleError);
+    }
+
+    markAsRead(userId: number, messageId: number) {
+        return this.authHttp.post(this.baseUrl + 'users/' + userId + '/messages/' + messageId + '/read', {}).subscribe();
+    }
+
+    sendMessage(id: number, message: Message) {
+        return this.authHttp.post(this.baseUrl + 'users/' + id + '/messages', message).map((response: Response) => {
+            return response.json();
+        }).catch(this.handleError);
+    }
+
+    deleteMessage(id: number, userId: number) {
+        return this.authHttp.post(this.baseUrl + 'users/' + userId + '/messages/' + id, {})
+        .map(_ => {})
         .catch(this.handleError);
     }
 }
